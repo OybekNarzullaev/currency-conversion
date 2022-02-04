@@ -1,38 +1,263 @@
-.App {
-  text-align: center;
+@import "~antd/dist/antd.css";
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-size: 1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#root {
+  height: 100%;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.ant-layout {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: fixed;
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 64px 1fr 3rem;
+  height: 100%;
+}
+.ant-layout-header {
+  grid-area: header;
+  height: 64px;
+  padding: 0 50px;
+  color: white;
+  line-height: 64px;
+  background: #202142;
+}
+.main {
+  grid-area: main;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.2)
+    ),
+    url("https://img.myloview.com/stickers/abstract-grey-hi-tech-polygonal-corporate-background-abstract-white-and-grey-on-light-silver-background-modern-design-vector-illustration-700-239200414.jpg");
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.ant-layout-footer {
+  grid-area: footer;
+  padding: 24px 50px;
+  color: white;
+  font-size: 14px;
+  background: #202142;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.logo,
+.currency {
+  cursor: pointer;
+  font-size: 1.1rem;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/*size*/
+.mr-10 {
+  margin-right: 10px;
+}
+.primary {
+  background-color: #40a9ff;
+  color: white;
+  border: 1px solid #40a9ff;
+}
+.primary:focus {
+  background-color: #40a9ff;
+  color: white;
+  border: 1px solid #40a9ff;
+}
+.primary:hover {
+  background-color: #40a9ff;
+  color: white;
+  border: 1px solid #40a9ff;
+}
+.primary:active {
+  color: white;
+  border: 1px solid#40a9ff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.success {
+  background-color: #61bf39;
+  color: white;
+  border: 1px solid #61bf39;
+}
+.success:focus {
+  background-color: #61bf39;
+  color: white;
+  border: 1px solid #61bf39;
+}
+.success:hover {
+  background-color: #76c554;
+  color: white;
+  border: 1px solid #76c554;
+}
+.success:active {
+  color: white;
+  border: 1px solid#76c554;
+}
+
+.container {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*home page*/
+.home {
+  display: flex;
+  width: 90%;
+}
+/*form styles*/
+.form {
+  width: 600px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border: #d9d9d9 solid 1px;
+  box-shadow: rgba(64, 169, 255, 0.5) 2px 2px 2px 0px;
+}
+.selects {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.result {
+  background-color: white;
+  padding: 10px;
+  border: 1px #d9d9d9 solid;
+  font-size: medium;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.control-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.output {
+  position: relative;
+  display: block;
+  width: 200px;
+  padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  transition: all 0.3s;
+  /* stylelint-disable-next-line selector-no-vendor-prefix */
+  display: inline-flex;
+}
+.disabledColor {
+  color: #d9d9d9;
+}
+.space {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*currencies component*/
+.currencies {
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(64, 169, 255, 0.1);
+  color: white;
+  padding: 0 20px;
+}
+.convertor {
+  flex: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.list-currencies {
+  display: block;
+  width: 100%;
+}
+.list-currencies-item {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*history page*/
+
+.history {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+.list-history {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  background-color: rgba(245, 245, 245, 0.8);
+}
+.list-history-item {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 950px) {
+  .main {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+  .convertor,
+  .currencies {
+    margin: 10px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .main {
+    flex-direction: column;
+  }
+  .convertor {
+    width: 400px;
+  }
+  .currencies {
+    margin: 10px;
+  }
+  .list-history {
+    width: 400px;
+    font-size: 1rem;
   }
 }

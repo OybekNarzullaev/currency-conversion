@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "antd/dist/antd.css";
+import "./app.css";
+import { Button, Layout, Result } from "antd";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import History from "./pages/History";
+import { Route, Routes, BrowserRouter as Router, Link } from "react-router-dom";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Router>
+        <Header />
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route element={<History />} path="/history" />
+          <Route
+            element={
+              <Result
+                status="404"
+                title="404"
+                subTitle="Sorry, the page you visited does not exist."
+                extra={
+                  <Link to="/">
+                    <Button type="primary">Back Home</Button>
+                  </Link>
+                }
+              />
+            }
+            path="*"
+          />
+        </Routes>
+      </Router>
+      <Footer />
+    </Layout>
   );
-}
+};
 
 export default App;
