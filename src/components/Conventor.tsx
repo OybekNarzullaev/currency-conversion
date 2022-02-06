@@ -1,112 +1,115 @@
+import React, { useState } from "react";
 import {
   ArrowRightOutlined,
+  CloseOutlined,
   SwapOutlined,
   TransactionOutlined,
 } from "@ant-design/icons";
 import { Button, Form, InputNumber, Select, Space, Spin, Divider } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import Flag from "react-world-flags";
+import { calculator } from "../utils/calculator";
+import { createHistory } from "../redux/actions";
 
-const Conventor = () => {
+const Conventor: React.FC = () => {
+  const dispatch = useDispatch();
+  const { currencies } = useSelector<RootState, any>(
+    (state) => state.currenciesList
+  );
+  const [output, setOutput] = useState(0);
+  const [inputValue, setInputValue] = useState(0);
+
+  const currStateCode: Array<string> = [
+    "so'm-uzb",
+    "usd-usa",
+    "рублей-rus",
+    "тэнге-kz",
+    "сом-kg",
+    "manat-tm",
+    "сомони-tj",
+  ];
+
+  const submitHandle = async (values: object) => {
+    const data = calculator(currencies, values);
+    dispatch(createHistory(data));
+    setOutput(data.currOutputValue);
+  };
+
   return (
     <div className="convertor">
-      <Form className="form">
+      <Form className="form" onFinish={submitHandle}>
         <Spin tip="Loading..." size="large" spinning={false}>
           <h3>
             <TransactionOutlined /> Конвертер
           </h3>
           <Divider />
           <Space className="selects">
-            <Form.Item label="От">
+            <Form.Item label="От" name="inputCode">
               <Select
                 size="large"
-                placeholder="Выберите валюту"
+                placeholder="Выберите"
                 style={{ width: "150px" }}
               >
-                <Select.Option value="usd">
-                  <span>
-                    <Flag code="usa" height="16" /> USD
-                  </span>
-                </Select.Option>
-                <Select.Option value="rub">
-                  <span>
-                    <Flag code="rus" height="16" /> Руб
-                  </span>
-                </Select.Option>
-                <Select.Option value="uzb">
-                  <span>
-                    <Flag code="uzb" height="16" /> so'm
-                  </span>
-                </Select.Option>
-                <Select.Option value="tenge">
-                  <span>
-                    <Flag code="kz" height="16" /> Тенгэ
-                  </span>
-                </Select.Option>
-                <Select.Option value="som">
-                  <span>
-                    <Flag code="kg" height="16" /> Сом
-                  </span>
-                </Select.Option>
-                <Select.Option value="manat">
-                  <span>
-                    <Flag code="tm" height="16" /> Манат
-                  </span>
-                </Select.Option>
+                {currStateCode.map((item: string, index: number) => (
+                  <Select.Option key={index} value={item}>
+                    <span>
+                      <Flag code={item.split("-")[1]} height="16" />
+                      {" " + item.split("-")[0].toUpperCase()}
+                    </span>
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
 
-            <Form.Item label="До">
+            <Form.Item label="До" name="outputCode">
               <Select
                 size="large"
-                placeholder="Выберите валюту"
+                placeholder="Выберите"
                 style={{ width: "150px" }}
               >
-                <Select.Option value="usd">
-                  <span>
-                    <Flag code="usa" height="16" /> USD
-                  </span>
-                </Select.Option>
-                <Select.Option value="rub">
-                  <span>
-                    <Flag code="rus" height="16" /> Руб
-                  </span>
-                </Select.Option>
-                <Select.Option value="uzb">
-                  <span>
-                    <Flag code="uzb" height="16" /> so'm
-                  </span>
-                </Select.Option>
-                <Select.Option value="tenge">
-                  <span>
-                    <Flag code="kz" height="16" /> Тенгэ
-                  </span>
-                </Select.Option>
-                <Select.Option value="som">
-                  <span>
-                    <Flag code="kg" height="16" /> Сом
-                  </span>
-                </Select.Option>
-                <Select.Option value="manat">
-                  <span>
-                    <Flag code="tm" height="16" /> Манат
-                  </span>
-                </Select.Option>
+                {currStateCode.map((item: string, index: number) => (
+                  <Select.Option key={index} value={item}>
+                    <span>
+                      <Flag code={item.split("-")[1]} height="16" />
+                      {" " + item.split("-")[0].toUpperCase()}
+                    </span>
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Space>
-          <Form.Item>
+          <Form.Item name="input">
             <InputNumber
               style={{ width: "100%" }}
               size="large"
-              placeholder="input"
+              placeholder="Вход"
               type="number"
+              onChange={(value: number) => setInputValue(value || 0)}
             />
           </Form.Item>
           <Form.Item className="result">
-            <span className="disabledColor">Output</span>
+            <span className="disabledColor">
+              {output ? (
+                <>
+                  <span className="output">{output}</span>
+                  <CloseOutlined
+                    className="clearIcon"
+                    onClick={() => setOutput(0)}
+                  />
+                </>
+              ) : (
+                "Вывод"
+              )}
+            </span>
           </Form.Item>
           <Space className="control-buttons">
-            <Button icon={<ArrowRightOutlined />} className="success">
+            <Button
+              icon={<ArrowRightOutlined />}
+              className="success"
+              htmlType="submit"
+              disabled={inputValue === 0 || !currencies}
+            >
               Конвертировать
             </Button>
             <Button icon={<SwapOutlined />} className="primary">

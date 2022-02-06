@@ -36,9 +36,11 @@ export let getHistory = () => {
 
 //add to history
 export let addToHistory = (currencyAction: currencyConvert) => {
+  console.log(currencyAction);
+
   let config: configtype = {
     url: `${host}/api/currencies/history`,
-    method: "get",
+    method: "post",
     data: currencyAction,
   };
   return httpRequest(config);

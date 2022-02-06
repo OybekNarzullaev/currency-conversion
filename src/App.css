@@ -159,20 +159,13 @@ code {
   justify-content: space-between;
 }
 .output {
-  position: relative;
-  display: block;
-  width: 200px;
-  padding: 4px 11px;
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 14px;
-  line-height: 1.5715;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px;
-  transition: all 0.3s;
-  /* stylelint-disable-next-line selector-no-vendor-prefix */
-  display: inline-flex;
+  color: black;
+}
+.clearIcon {
+  position: absolute;
+  right: 2px;
+  color: #202142;
+  cursor: pointer;
 }
 .disabledColor {
   color: #d9d9d9;
