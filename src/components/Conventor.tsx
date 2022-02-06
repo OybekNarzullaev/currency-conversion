@@ -118,9 +118,9 @@ const Conventor: React.FC = () => {
             >
               Конвертировать
             </Button>
-            <Button icon={<SwapOutlined />} className="primary">
+            {/* <Button icon={<SwapOutlined />} className="primary">
               Заменять
-            </Button>
+            </Button> */}
           </Space>
         </Spin>
       </Form>
