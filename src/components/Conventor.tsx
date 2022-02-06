@@ -19,6 +19,8 @@ const Conventor: React.FC = () => {
   );
   const [output, setOutput] = useState(0);
   const [inputValue, setInputValue] = useState(0);
+  const [inputCurr, setInputCurr] = useState(false);
+  const [outputCurr, setOutputCurr] = useState(false);
 
   const currStateCode: Array<string> = [
     "so'm-uzb",
@@ -50,6 +52,7 @@ const Conventor: React.FC = () => {
                 size="large"
                 placeholder="Выберите"
                 style={{ width: "150px" }}
+                onChange={() => setInputCurr(true)}
               >
                 {currStateCode.map((item: string, index: number) => (
                   <Select.Option key={index} value={item}>
@@ -67,6 +70,7 @@ const Conventor: React.FC = () => {
                 size="large"
                 placeholder="Выберите"
                 style={{ width: "150px" }}
+                onChange={() => setOutputCurr(true)}
               >
                 {currStateCode.map((item: string, index: number) => (
                   <Select.Option key={index} value={item}>
@@ -108,7 +112,9 @@ const Conventor: React.FC = () => {
               icon={<ArrowRightOutlined />}
               className="success"
               htmlType="submit"
-              disabled={inputValue === 0 || !currencies}
+              disabled={
+                inputValue === 0 || !currencies || !outputCurr || !inputCurr
+              }
             >
               Конвертировать
             </Button>
