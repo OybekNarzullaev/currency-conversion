@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Divider, List } from "antd";
 import Flag from "react-world-flags";
-//import { currencies } from "../server/data";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { listCurrencies } from "../redux/actions";
+import { useAppDispatch, useAppSelector } from "../redux/reducers/hooks";
+import { listCurrencySlice } from "../redux/reducers/currencyListSlice";
 
 type CurrencyItemType = {
   title: string;
@@ -13,17 +13,15 @@ type CurrencyItemType = {
 };
 
 const Currencies: React.FC = () => {
-  const { currencies, loading } = useSelector<RootState, any>(
-    (state) => state.currenciesList
+  const { currencies, loading } = useAppSelector(
+    (state: RootState) => state.currenciesList
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(
-      currencies
-        ? { type: "CURRENCY_LIST_SUCCESS", payload: currencies }
-        : listCurrencies()
-    );
+    currencies.length !== 0
+      ? dispatch(listCurrencySlice.actions.listCurrencySuccess(currencies))
+      : dispatch(listCurrencies());
   }, []);
   return (
     <div className="currencies">

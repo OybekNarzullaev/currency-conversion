@@ -1,55 +1,42 @@
 import { addToHistory, getCurrencies, getHistory } from "../server/api";
 import { onFinishFailed, onFinishSucces } from "../utils/helper";
-import {
-  CONVERT_HISTORY_FAIL,
-  CONVERT_HISTORY_REQUEST,
-  CONVERT_HISTORY_SUCCESS,
-  CREATE_HISTORY_FAIL,
-  CREATE_HISTORY_REQUEST,
-  CREATE_HISTORY_SUCCESS,
-  CURRENCY_LIST_FAIL,
-  CURRENCY_LIST_REQUEST,
-  CURRENCY_LIST_SUCCESS,
-} from "./constants";
+import { createHistorySlice } from "./reducers/createHistorySlice";
+import { listCurrencySlice } from "./reducers/currencyListSlice";
+import { historyListSlice } from "./reducers/historyListSlice";
+import { AppDispatch } from "./store";
 
-export const listCurrencies = () => async (dispatch: any) => {
-  dispatch({
-    type: CURRENCY_LIST_REQUEST,
-  });
+export const listCurrencies = () => async (dispatch: AppDispatch) => {
+  dispatch(listCurrencySlice.actions.listCurrencyFetching());
   try {
     const { data } = await getCurrencies();
 
-    dispatch({ type: CURRENCY_LIST_SUCCESS, payload: data });
+    dispatch(listCurrencySlice.actions.listCurrencySuccess(data));
   } catch (error: any) {
-    dispatch({ type: CURRENCY_LIST_FAIL, payload: error.message });
+    dispatch(listCurrencySlice.actions.listCurrencyError(error.message));
   }
 };
 
-export const historyConvert = () => async (dispatch: any) => {
-  dispatch({
-    type: CONVERT_HISTORY_REQUEST,
-  });
+export const historyConvert = () => async (dispatch: AppDispatch) => {
+  dispatch(historyListSlice.actions.historyListFetching());
   try {
     const { data } = await getHistory();
-    console.log(data);
 
-    dispatch({ type: CONVERT_HISTORY_SUCCESS, payload: data });
+    dispatch(historyListSlice.actions.historyListSuccess(data));
   } catch (error: any) {
-    dispatch({ type: CONVERT_HISTORY_FAIL, payload: error.message });
+    dispatch(historyListSlice.actions.historyListError(error.message));
   }
 };
 
-export const createHistory = (history: any) => async (dispatch: any) => {
-  dispatch({
-    type: CREATE_HISTORY_REQUEST,
-  });
-  try {
-    const { data } = await addToHistory(history);
-    onFinishSucces("Сохранено в истории");
-    dispatch(historyConvert());
-    dispatch({ type: CREATE_HISTORY_SUCCESS, payload: data });
-  } catch (error: any) {
-    dispatch({ type: CREATE_HISTORY_FAIL, payload: error.message });
-    onFinishFailed(error.message);
-  }
-};
+export const createHistory =
+  (history: any) => async (dispatch: AppDispatch) => {
+    dispatch(createHistorySlice.actions.createHistoryFetching());
+    try {
+      await addToHistory(history);
+      onFinishSucces("Сохранено в истории");
+      dispatch(historyConvert());
+      dispatch(createHistorySlice.actions.createHistorySuccess);
+    } catch (error: any) {
+      dispatch(createHistorySlice.actions.createHistoryError(error.message));
+      onFinishFailed(error.message);
+    }
+  };

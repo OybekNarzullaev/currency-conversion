@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { List } from "antd";
 import Flag from "react-world-flags";
-import { useDispatch, useSelector } from "react-redux";
 import { historyConvert } from "../redux/actions";
 import { RootState } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/reducers/hooks";
+import { historyListSlice } from "../redux/reducers/historyListSlice";
 
 type historyItem = {
   currInputCode: Array<string>;
@@ -13,20 +14,16 @@ type historyItem = {
 };
 
 const History: React.FC = () => {
-  const dispatch = useDispatch();
-  const { history, loading } = useSelector<RootState, any>(
-    (state) => state.convertHistory
+  const dispatch = useAppDispatch();
+  const { history, loading } = useAppSelector(
+    (state: RootState) => state.convertHistory
   );
-  const { newHistory } = useSelector<RootState, any>(
-    (state) => state.addToHistory
-  );
+
   useEffect(() => {
-    dispatch(
-      history.length !== 0
-        ? { type: "CONVERT_HISTORY_SUCCESS", payload: history }
-        : historyConvert()
-    );
-  }, [newHistory]);
+    history.length !== 0
+      ? dispatch(historyListSlice.actions.historyListSuccess(history))
+      : dispatch(historyConvert());
+  }, []);
   return (
     <div className="main">
       <div className="history">

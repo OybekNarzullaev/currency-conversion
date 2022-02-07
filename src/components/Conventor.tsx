@@ -11,12 +11,14 @@ import { RootState } from "../redux/store";
 import Flag from "react-world-flags";
 import { calculator } from "../utils/calculator";
 import { createHistory } from "../redux/actions";
+import { useAppDispatch, useAppSelector } from "../redux/reducers/hooks";
 
 const Conventor: React.FC = () => {
-  const dispatch = useDispatch();
-  const { currencies } = useSelector<RootState, any>(
-    (state) => state.currenciesList
+  const dispatch = useAppDispatch();
+  const { currencies } = useAppSelector(
+    (state: RootState) => state.currenciesList
   );
+
   const [output, setOutput] = useState(0);
   const [inputValue, setInputValue] = useState(0);
   const [inputCurr, setInputCurr] = useState(false);

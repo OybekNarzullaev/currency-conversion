@@ -1,27 +1,19 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import thunk from "redux-thunk";
-import {
-  createHistoryReducer,
-  currencyListReducer,
-  historyConvertReducer,
-} from "./reducers";
-import { composeWithDevTools } from "redux-devtools-extension";
-const initialState: object = {
-  currenciesList: [],
-};
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import createHistoryReducer from "./reducers/createHistorySlice";
+import currencyListReducer from "./reducers/currencyListSlice";
+import historyConvertReducer from "./reducers/historyListSlice";
 
 const rootReducer = combineReducers({
   currenciesList: currencyListReducer,
   convertHistory: historyConvertReducer,
   addToHistory: createHistoryReducer,
 });
-//const composeEnhacer =  window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
+export const setupStore = () => {
+  return configureStore({
+    reducer: rootReducer,
+  });
+};
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(thunk))
-);
-
-export type RootState = ReturnType<typeof store.getState>;
-export default store;
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore["dispatch"];
